@@ -7,6 +7,12 @@ Using Q-Learning to teach an agent how to play Pong from the pixels. Final proje
 
 Reinforcement learning has been growing for a few years and giving some amazing new techniques that were thought to be impossible or really hard. It has evolved from simple tasks requiring domain knowledge, to other more abstract ones, and finally it ended up beating humans on human games. For this project, the idea is to develop an agent that can learn how to play the game of Pong, not only that, but it shall start without any knowledge, about what is the ball, the paddles and how a point is scored. It shall learn from the frame pixels, similarly to the vision captured by the human eye from the game and decide between 3 possible actions: UP, DOWN and STAY.
 
+![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/images/image_2.png)
+
+### Some Notes 
+
+Since I was not the author of the environment, I have requested the author (Teaching assistants from the course) to put here the environment. They told me that they will publish it, so whenever it is published I will refer to it here, so anyone can reproduce this code afterwards.
+
 ## External Sources 
 
 - [Playing Atari with Deep Reinforcement Learning](https://arxiv.org/pdf/1312.5602.pdf)
@@ -82,5 +88,15 @@ Convolutional neural networks are a special case of Artificial Neural Networks t
 On the list above is possible to see how points relate to the score obtained by SimpleAI and the Agent for a total of 21 points played. A further note to the fact that if the score is positive then the points of the SimpleAI and the Agent are swap (e.g. 17; Agent: 19 points; SimpleAI: 2 points).
 
 
-![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/image_2.png)
+![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/images/image_2.png)
 
+#### Training plots 
+
+![Train plot1](./images/Reward_score_steos.svg "Score per training steps")
+
+On Figure above it is possible to see the agents from the table learning throughout the training process, the score that ranges from -21 to 21 on odd numbers, varies across the number of training steps. This training steps as seen before happen after each 4 environment steps, in other words after 4 frames. This figure and the other shown in this report were generated with the help of the tensorboard, and smoothed to increase the readability. 
+
+
+![Train plot2](./images/Reward_score.svg "Score per games")
+
+Regarding figure above it is possible to observe the reward achieved after a game of 21 points. If we look to the blur lines it is possible to observe that after 200 games the agents start to consistently beat SimapleAI. Nevertheless the smoothed line only achieves a score above 0 after 600 games. 
