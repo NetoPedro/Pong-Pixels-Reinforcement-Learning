@@ -9,6 +9,10 @@ Reinforcement learning has been growing for a few years and giving some amazing 
 
 ![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/images/image_2.png)
 
+### Some Notes 
+
+Since I was not the author of the environment, I have requested the author (Teaching assistants from the course) to put here the environment. They told me that they will publish it, so whenever it is published I will refer to it here, so anyone can reproduce this code afterwards.
+
 ## External Sources 
 
 - [Playing Atari with Deep Reinforcement Learning](https://arxiv.org/pdf/1312.5602.pdf)
