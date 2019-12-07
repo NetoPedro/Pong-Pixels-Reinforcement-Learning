@@ -12,3 +12,30 @@ Reinforcement learning has been growing for a few years and giving some amazing 
 - [Playing Atari with Deep Reinforcement Learning](https://arxiv.org/pdf/1312.5602.pdf)
 
 - [Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/pdf/1509.06461.pdf)
+
+
+## Approach and methods
+
+In this section, the methods used will be described with some detail and explained why and how they work. Finally it presents also the final pseudo code used to train the agent. 
+
+### Preprocessing
+
+Most of the preprocessing was based on the [techniques presented by Deep Mind](https://arxiv.org/pdf/1312.5602.pdf), and it consists in receiving the raw pixels from the game converting them from RGB to a grayscale representation, while resizing it to 84x84. This resolution is thought to be used on the specific network architecture for this problem. 
+
+This techniques allow the network to have less information to learn, since the colours are not important in this problem, and gray scale reduces the size of a frame by a factor of 3. Furthermore, the space reduction of the resizing allows the image to be compact and at same time to hold enough information so the network can predict from. 
+
+However, these spatial reductions are not enough, a single static image has very low information that can be used by the network. Thus, by stacking several layers a few other physic laws are included in the input. For example, if we stack two consecutive frames together it is possible to determine the speed of the ball. Adding a third, allows to determine the acceleration. DeepMind stacks four consecutive layers, therefore that is also the number used here. 
+
+### Deep Q Learning
+
+Deep Q Learning is an off-policy algorithm that combines the use of regular Q learning with deep neural networks. The implementation is very similar, with the agent observing the environment, estimating the Q values for each possible action and selecting the action that maximizes that value.  Throughout the training process, these Q values are at each step compared with the discounted rewards until the end of the episode. This comparison is the ground truth used to perform an update in the way these Q values are calculated. With deep Q learning, a deep neural network is responsible to estimate the Q values, and the update step is done using automatic differentiation. These networks perform only an estimation of the value of taking each action, nevertheless, they also add the possibility to use continuous state spaces, something that is not possible with regular Q learning.  
+
+Since the Q values are estimated by the network, the discounted rewards follow the same estimation pattern. However, it has been shown that this leads to an overestimation of the value of a specific action, possible leading the agent to be stuck on local optimums. Hence, and an alternative is to have a second deep neural network, a target network, dedicated to estimating the Q values for the next states. This target network should have its weights copied from the main network after some number of steps. 
+
+### Experience Replay
+
+A reinforcement learning agent is frequently challenging to train, and in some cases, it is also sample inefficient. To tackle this problem the update step can be performed not on consecutive, correlated samples, but on a batch of samples randomly selected from previous observations. This helps the model to learn, but it is only possible because the Deep Q learning algorithm proposed is an off-policy algorithm that does not try to enforce a policy, but the Q values, which are related to pairs state-action. 
+
+### Convolutional Neural Network
+
+Convolutional neural networks are a special case of Artificial Neural Networks that perform specially well with images. This is due to the fact that this networks usually have less parameters than one with only linear layers, and they can correlated pixels near. Each convolutional layer maps to the next one with the use of mask of a specific size. To that masks we call kernels or sliding windows. Our architecture is the [network proposed by DeepMind](https://arxiv.org/pdf/1509.06461.pdf), and uses an RMSprop optimizer to update the weights at each update step. 
