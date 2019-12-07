@@ -90,4 +90,9 @@ On the list above is possible to see how points relate to the score obtained by 
 
 ![Train plot1](./images/Reward_score_steos.svg "Score per training steps")
 
+On Figure above it is possible to see the agents from the table learning throughout the training process, the score that ranges from -21 to 21 on odd numbers, varies across the number of training steps. This training steps as seen before happen after each 4 environment steps, in other words after 4 frames. This figure and the other shown in this report were generated with the help of the tensorboard, and smoothed to increase the readability. 
+
+
 ![Train plot2](./images/Reward_score.svg "Score per games")
+
+Regarding figure above it is possible to observe the reward achieved after a game of 21 points. If we look to the blur lines it is possible to observe that after 200 games the agents start to consistently beat SimapleAI. Nevertheless the smoothed line only achieves a score above 0 after 600 games. 
