@@ -14,27 +14,18 @@ class Network(nn.Module):
         self.feature_dim = 512 
 
         self.conv1 = nn.Conv2d(in_channels, 32, kernel_size=8, stride=4)
-        #nn.init.orthogonal_(self.conv1.weight.data)
         nn.init.kaiming_normal_(self.conv1.weight)
-        #nn.init.constant_(self.conv1.biais.data,0)
 
         self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
-        #nn.init.orthogonal_(self.conv2.weight.data)
         nn.init.kaiming_normal_(self.conv2.weight)
-        #nn.init.constant_(self.conv2.bias.data,0)
 
         self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
-        #nn.init.orthogonal_(self.conv3.weight.data)
         nn.init.kaiming_normal_(self.conv3.weight)
-        #nn.init.constant_(self.conv3.bias.data,0)
 
         self.fc4 = nn.Linear(7 * 7 * 64, self.feature_dim)
-        #nn.init.orthogonal_(self.fc4.weight.data)
         nn.init.kaiming_normal_(self.fc4.weight)
-        #nn.init.constant_(self.fc4.bias.data,0)
         
         self.out = nn.Linear(self.feature_dim,3)
-
 
         self.relu = nn.ReLU()
 
@@ -70,13 +61,8 @@ class Agent(object):
         self.epsilon = 0.0005
         self.discount = .99
         self.random_start_iter = 0
-        self.params = self.network.parameters()
-        self.noop = 0
-        self.random_noop = 0        
-       #LR = 0.00025 Momentoum 0.95 min 0.01
-        # Exploratio 1 to 0.1 . 1 Million exploration frames
-        # Replay start size = 50000. no-op max = 30
-
+        self.params = self.network.parameters()      
+      
     def update_network(self):
         """
         Optimize the network accordingly with the experience
@@ -104,24 +90,21 @@ class Agent(object):
         expected_state_action_values = reward_batch + self.discount * next_state_values
 
         self.optimizer.zero_grad()
-        #print(state_action_values.shape)
-        #print(state_action_values.squeeze().shape)
+        
         loss = nn.functional.smooth_l1_loss(state_action_values.squeeze(),
                                 expected_state_action_values)
 
-        # Optimize the model
         
         loss.backward()
-        #for param in self.network.parameters():
-        #    param.grad.data.clamp_(-1, 1)
-        #torch.nn.utils.clip_grad_norm_(self.params, 10)
+        
+
         self.optimizer.step()
 
     def store_memory(self,state, action, next_state, reward, done):
         """
         Method to store in memory an specific observation, action, reward to be used later on
         """
-        #next_state = cv2.cvtColor(cv2.resize(next_state,(84,84),interpolation=cv2.INTER_AREA), cv2.COLOR_RGB2GRAY)
+
         img = Image.fromarray(next_state)
         img = img.convert("L")
         next_state = img.resize((84, 84), Image.NEAREST)
@@ -134,6 +117,7 @@ class Agent(object):
         elif reward < 0:
             reward = -1
         reward = torch.tensor([reward], dtype=torch.int8)
+
         next_state = torch.from_numpy(
                 np.append(next_state, self.frames[:(self.frame_number-1), :, :], axis=0)).type(torch.uint8)
         frames = torch.from_numpy(self.frames).short().type(torch.uint8)
@@ -153,10 +137,10 @@ class Agent(object):
         Runs the network and selects an action to perform
         :return: the action to be performed
         """
+
         img = Image.fromarray(observation)
         img = img.convert("L")
         observation = img.resize((84, 84), Image.NEAREST)
-        #observation = cv2.cvtColor(cv2.resize(observation,(84,84),interpolation=cv2.INTER_AREA), cv2.COLOR_RGB2GRAY)
         if self.start:
             observation = np.reshape(observation, (84, 84))
             self.start = False
@@ -169,16 +153,12 @@ class Agent(object):
             self.random_start_iter -= 1
             action = np.random.randint(3)
         else:
-            if self.noop > 0:
-                self.noop -= 1
-                return 0
             if np.random.random() < self.epsilon:
                 action = random.randrange(3)
             else:
                 action = self.network(torch.tensor(self.frames.reshape((1,self.frame_number,84,84)),dtype=torch.float32,device=device)/255.0)
                 _,action = torch.max(action,dim=1)
                 action = int(action.item())
-
         return action
 
     def get_name(self) -> str:
@@ -194,9 +174,6 @@ class Agent(object):
         """
         self.frames = np.zeros((84,84,self.frame_number))
         self.start = True
-        self.start2 = True
-        self.noop = 0#np.random.randint(self.random_noop)
-        self.frame_holder = np.zeros((84, 84, self.frame_number))
         self.appended_frame = 0
 
     def update_target_network(self):
@@ -230,91 +207,3 @@ class ReplayMemory(object):
 
     def __len__(self):
         return len(self.memory)
-
-"""
-        action_batch = torch.cat(batch.action).long().to(device)
-        reward_batch = torch.cat(batch.reward).float().to(device)
-
-        state_action_values = self.network(state_batch).gather(1, action_batch)
-
-        next_state_values = torch.zeros(self.batch_size,device=device)
-        next_state_values[non_final_mask] = self.target_network(non_final_next_states).max(1)[0].detach()
-
-        expected_state_action_values = reward_batch + self.discount * next_state_values
-
-        self.optimizer.zero_grad()
-
-        loss = nn.functional.smooth_l1_loss(state_action_values.squeeze(),
-                                expected_state_action_values)
-
-        # Optimize the model
-
-        loss.backward()
-        #for param in self.network.parameters():
-        #    param.grad.data.clamp_(-1, 1)
-        self.optimizer.step()
-
-    def store_memory(self,state, action, next_state, reward, done):
-       
-        Method to store in memory an specific observation, action, reward to be used later on
-       
-       
-       
-
-        next_state = cv2.cvtColor(cv2.resize(next_state, (84, 84)), cv2.COLOR_RGB2GRAY)
-        #_, next_state = cv2.threshold(next_state, 1, 255, cv2.THRESH_BINARY)
-        next_state = np.reshape(next_state, (1,84, 84))
-
-        action = torch.tensor([[action]]).short()
-        reward = reward/10
-        reward = torch.tensor([reward], dtype=torch.short)
-        next_state = torch.from_numpy(np.append(next_state, self.frames[:(self.frame_number-1), :, :], axis=0)).short()
-        frames = torch.from_numpy(self.frames).short()
-
-        self.memory.push(frames,action, next_state
-                         ,reward,done)
-
-    def load_model(self):
-       
-        Loads a trained model from a file
-       
-        weights = torch.load("model.mdl")
-        self.network.load_state_dict(weights, strict=False)
-
-    def get_action(self, observation) -> int:
-       ""
-        Runs the network and selects an action to perform
-        :return: the action to be performed
-        ""
-
-        observation = cv2.cvtColor(cv2.resize(observation,(84,84)), cv2.COLOR_RGB2GRAY)
-
-        #_, observation = cv2.threshold(observation, 1, 255, cv2.THRESH_BINARY)
-
-
-
-        if self.start:
-            observation = np.reshape(observation, (84, 84))
-            self.start =  False
-            self.frames = np.stack((observation, observation, observation, observation), axis=0)
-        else:
-            observation = np.reshape(observation, (1, 84, 84))
-            self.frames = np.append(observation, self.frames[:(self.frame_number-1), :, :], axis=0)
-
-
-        if self.random_start_iter > 0:
-            self.random_start_iter -= 1
-            action = np.random.randint(3)
-        else:
-            if np.random.random() < self.epsilon:
-                action = random.randrange(3)
-            else:
-                action = self.network(torch.tensor(self.frames.reshape((1,self.frame_number,84,84)),dtype=torch.float32,device=device))
-                _,action = torch.max(action,dim=1)
-                action = int(nction to reset the agent state after each episode
-        ""
-        self.zeros((84,84,self.frame_number))
-        self.start = Tru
-    def update_target_network(self):        self.target_network.load_state_dict(self.network.state_dict())
-"""
-

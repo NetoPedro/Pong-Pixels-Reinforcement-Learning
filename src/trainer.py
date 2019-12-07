@@ -24,6 +24,7 @@ env = gym.make("WimblepongVisualMultiplayer-v0")
 env.unwrapped.scale = args.scale
 env.unwrapped.fps = args.fps
 # Number of episodes/games to play
+
 episodes = 10000000
 target_update = 250
 
@@ -35,7 +36,9 @@ player = Agent(player_id)
 
 # Set the names for both SimpleAIs
 env.set_names(player.get_name(), opponent.get_name())
+
 writer = SummaryWriter()
+
 win1 = 0
 score = 0
 iteraction = 0
@@ -47,13 +50,13 @@ update_frequency = 4
 player.epsilon = initial_epsilon
 frames = 0
 replays = 0
-player.random_noop = 0
+
 for i in range(0,episodes):
     points = 0
     score = 0
     if iteraction > 1000000:
+
         final_epsilon = 0.05
-        player.random_noop = 0
     
     while points < 21 :
         done = False
