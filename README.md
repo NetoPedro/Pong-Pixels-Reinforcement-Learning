@@ -54,4 +54,33 @@ Convolutional neural networks are a special case of Artificial Neural Networks t
 | **Blue**  | **100000**  | **250**  | **100000**  | **\[85;95\[**  | 
 | Red  | 70000  | 250  | 250000  | \[75;80\[  | 
 
+#### Other Hyperparameters 
+
+
+- Learning Rate: 0.0001
+- Batch Size: 32
+- Frame Stack Size: 4
+- Discount Factor: 0.99
+- Frame Size: 84x84x1 (Gray Scale)
+- Update Frequency: After 4 steps
+- Random Play Initial Memory: 9900
+
+#### Score Explained
+
+- Score: -21; Agent: 0 points; SimpleAI: 21 points
+- Score: -19; Agent: 1 points; SimpleAI: 20 points
+- Score: -17; Agent: 2 points; SimpleAI: 19 points
+- Score: -15; Agent: 3 points; SimpleAI: 18 points
+- Score: -13; Agent: 4 points; SimpleAI: 17 points
+- Score: -11; Agent: 5 points; SimpleAI: 16 points
+- Score: -9; Agent: 6 points; SimpleAI: 15 points
+- Score: -7; Agent: 7 points; SimpleAI: 14 points
+- Score: -5; Agent: 8 points; SimpleAI: 13 points
+- Score: -3; Agent: 9 points; SimpleAI: 12 points
+- Score: -1; Agent: 10 points; SimpleAI: 11 points
+
+On the list above is possible to see how points relate to the score obtained by SimpleAI and the Agent for a total of 21 points played. A further note to the fact that if the score is positive then the points of the SimpleAI and the Agent are swap (e.g. 17; Agent: 19 points; SimpleAI: 2 points).
+
+
+![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/image_2.png)
 
