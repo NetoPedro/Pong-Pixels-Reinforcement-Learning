@@ -88,6 +88,6 @@ On the list above is possible to see how points relate to the score obtained by 
 
 #### Training plots 
 
-![Train plot1](./images/Reward_score_steos.svg)
+![Train plot1](./images/Reward_score_steos.svg "Score per training steps")
 
-![Train plot2](./images/Reward_score.svg)
+![Train plot2](./images/Reward_score.svg "Score per games")
