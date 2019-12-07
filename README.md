@@ -7,6 +7,8 @@ Using Q-Learning to teach an agent how to play Pong from the pixels. Final proje
 
 Reinforcement learning has been growing for a few years and giving some amazing new techniques that were thought to be impossible or really hard. It has evolved from simple tasks requiring domain knowledge, to other more abstract ones, and finally it ended up beating humans on human games. For this project, the idea is to develop an agent that can learn how to play the game of Pong, not only that, but it shall start without any knowledge, about what is the ball, the paddles and how a point is scored. It shall learn from the frame pixels, similarly to the vision captured by the human eye from the game and decide between 3 possible actions: UP, DOWN and STAY.
 
+![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/images/image_2.png)
+
 ## External Sources 
 
 - [Playing Atari with Deep Reinforcement Learning](https://arxiv.org/pdf/1312.5602.pdf)
@@ -82,5 +84,10 @@ Convolutional neural networks are a special case of Artificial Neural Networks t
 On the list above is possible to see how points relate to the score obtained by SimpleAI and the Agent for a total of 21 points played. A further note to the fact that if the score is positive then the points of the SimpleAI and the Agent are swap (e.g. 17; Agent: 19 points; SimpleAI: 2 points).
 
 
-![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/image_2.png)
+![Agent Playing](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/images/image_2.png)
 
+#### Training plots 
+
+![Train plot1](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/images/Reward_score_steos.svg)
+
+![Train plot2](https://raw.githubusercontent.com/NetoPedro/Pong-Pixels-Reinforcement-Learning/master/images/Reward_score.svg)
