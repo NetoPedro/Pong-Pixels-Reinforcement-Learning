@@ -39,3 +39,19 @@ A reinforcement learning agent is frequently challenging to train, and in some c
 ### Convolutional Neural Network
 
 Convolutional neural networks are a special case of Artificial Neural Networks that perform specially well with images. This is due to the fact that this networks usually have less parameters than one with only linear layers, and they can correlated pixels near. Each convolutional layer maps to the next one with the use of mask of a specific size. To that masks we call kernels or sliding windows. Our architecture is the [network proposed by DeepMind](https://arxiv.org/pdf/1509.06461.pdf), and uses an RMSprop optimizer to update the weights at each update step. 
+
+
+
+
+## Results and performance analysis
+
+| Colour  | Experience Replay Size | Target Update Frequency  | Exploration episodes | WinRate Simple AI  | 
+| ------------- | ------------- | ------------- | ------------- | ------------- |
+| Pink  | 40000 | 1000  | 100000  | \[65;70\[  | 
+| Green  | 40000  | 250  | 100000  | \[65;70\[   | 
+| Gray  | 10000  | 1000  | 100000  | \[75;85\[  | 
+| Orange  | 10000  | 250  | 100000  | \[65;70\[  | 
+| **Blue**  | **100000**  | **250**  | **100000**  | **\[85;95\[**  | 
+| Red  | 70000  | 250  | 250000  | \[75;80\[  | 
+
+
